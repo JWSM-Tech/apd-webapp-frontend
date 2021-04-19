@@ -2,11 +2,7 @@ import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faCut,
-    faBars,
-    faTimes,
-    faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom"
 import { Nav } from "react-bootstrap"
 import PropTypes from "prop-types";
 

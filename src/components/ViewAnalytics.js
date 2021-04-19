@@ -1,32 +1,85 @@
-import axios from "axios"
-import { React, useState, useEffect } from "react"
-import { Container, Row, Col } from "react-bootstrap"
-
-const analyticsRoute = "https://apd-webapp-backend.herokuapp.com/api/analytics"
+import { React } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 function ViewAnalytics(props) {
-    const [analytics, setAnalytics] = useState([])
+  return (
+    <Container>
+      <Row>
+        <Col>
+          <h1 className="title">Analytics</h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {!props.loading &&
+            props.analytics.map((analytic, i) => {
+              return (
+                <div key={i} className="analytic-item">
+                  <Row>
+                    <Col>
+                      <h2 className="taken-date">
+                        {"Analytic date: " + analytic.taken_date}
+                      </h2>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <span>
+                        <b>Original date: </b>
+                        {analytic.original_date}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <span>
+                        <b>Pill Names: </b>
+                        {analytic.pill_names.map((pillName, i) => {
+                          if (pillName === "") return;
 
-    useEffect(() => {
-        axios.get(
-            analyticsRoute
-        ).then((res) => {
-            setAnalytics(res.data)
-        }).catch((err) => {
-            console.warn(err);
-        })
-    })
-
-    console.log(analytics)
-
-    return (
-        <Container>
-            <Row>
-                <Col>
-                </Col>
-            </Row>
-        </Container>
-    )
+                          if (i === analytic.pill_names.length - 1) {
+                            return pillName;
+                          }
+                          return pillName + ", ";
+                        })}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <span>
+                        <b>Pill Quantites: </b>
+                        {analytic.pill_quantities.map((pillQuantity, i) => {
+                          if (pillQuantity === 0) return;
+                          if (i === analytic.pill_quantities.length - 1) {
+                            return pillQuantity;
+                          }
+                          return pillQuantity + ", ";
+                        })}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <span>
+                        <b>Completed? </b>
+                        {(analytic.completed && "Yes") || "No"}
+                      </span>
+                    </Col>
+                  </Row>
+                </div>
+              );
+            })}
+        </Col>
+      </Row>
+    </Container>
+  );
 }
+
+ViewAnalytics.propTypes = {
+  loading: PropTypes.bool,
+  analytics: PropTypes.array,
+};
 
 export default ViewAnalytics;

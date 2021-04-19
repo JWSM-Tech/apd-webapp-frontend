@@ -6,12 +6,11 @@ import axios from "axios"
 
 const espRoute = "http://192.168.0.17/submit_data"
 
-function CreateReminder(props) {
+function CreateReminder() {
     const [reminderTime, setReminderTimer] = useState(new Date())
     const [pillNames, setPillNames] = useState('');
     const [pillQuantities, setPillQuantites] = useState('')
     const [submitted, setSubmitted] = useState(false)
-    console.log(reminderTime, pillNames, pillQuantities)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -68,19 +67,20 @@ function CreateReminder(props) {
                                     <Form.Label>Pill Names</Form.Label>
                                     <Form.Control type="text" placeholder="Pill1, Pill2, ..." value={pillNames} onChange={e => setPillNames(e.target.value)} />
                                     <Form.Text className="text-muted">
-                                        Enter up to 8 pill names separated by commas
+                                        Enter 8 pill names separated by commas (empty if no pill on that position)
                                     </Form.Text>
                                 </Form.Group>
                                 <Form.Group controlId="formPillQuantites">
                                     <Form.Label>Pill Quantities</Form.Label>
                                     <Form.Control type="text" placeholder="Q1, Q2, ..." value={pillQuantities} onChange={e => setPillQuantites(e.target.value)} />
                                     <Form.Text className="text-muted">
-                                        Enter up to 8 pill quantities separated by commas
+                                        Enter 8 pill quantities separated by commas (0 if no pill on that position)
                                     </Form.Text>
                                 </Form.Group>
                                 <Button variant="primary" type="submit" onClick={handleSubmit}>
                                     Create
                                 </Button>
+                                {submitted && <span></span>}
                             </Form>
                         </Col>
                     </Row>
