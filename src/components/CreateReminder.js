@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios"
 
-const espRoute = "http://192.168.0.17/submit_data"
+const espRoute = "http://apdwifimodule.local/submit_data"
 
 function CreateReminder() {
     const [reminderTime, setReminderTimer] = useState(new Date())
