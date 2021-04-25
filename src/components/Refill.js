@@ -3,13 +3,10 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-// TODO: Change routes
-
-const espRoute = "http://apdwifimodule.local/submit_data";
-const espDoneRoute = "http://apdwifimodule.local/";
+const espRoute = "http://apdwifimodule.local/submit_refill_data";
 
 function Refill(props) {
-  const [refillQuantities, setRefillQuantities] = useState([]);
+  const [pillQuantities, setRefillQuantities] = useState([]);
   const [pillPick, setPillPick] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -18,7 +15,7 @@ function Refill(props) {
 
     axios
       .post(espRoute, {
-        refillQuantities: refillQuantities,
+        pillQuantities: pillQuantities,
       })
       .then(() => {
         setSubmitted(true);
@@ -28,16 +25,8 @@ function Refill(props) {
       });
   };
 
-  const handleDone = (e) => {
-    e.preventDefault();
-
-    axios.post(espDoneRoute, {
-      done: true,
-    });
-  };
-
   const getNoneZeroVal = () => {
-    return refillQuantities.filter((number) => {
+    return pillQuantities.filter((number) => {
       return number !== 0;
     })[0];
   };
@@ -63,7 +52,7 @@ function Refill(props) {
                   <Row>
                     <Col>
                       <span className="pill-names-list">
-                        {props.pillNames.map((name, i) => {
+                        {!props.loading && props.pillNames.map((name, i) => {
                           if (i == props.pillNames.length - 1) return name;
 
                           return name + ", ";
@@ -94,30 +83,31 @@ function Refill(props) {
                     <Form.Label className="mr-3">
                       <b>Select pill to refill</b>
                     </Form.Label>
-                    {props.pillNames.map((name) => {
-                      return (
-                        <div key={`inline-${name}`} className="mb-3">
-                          <Form.Check
-                            inline
-                            label={name}
-                            type="radio"
-                            id={name}
-                            name="pickPill"
-                            onChange={(e) => {
-                              setPillPick(e.target.id);
-                              setRefillQuantities(
-                                props.pillNames.map((name) => {
-                                  if (name === e.target.id) {
-                                    return getNoneZeroVal();
-                                  }
-                                  return 0;
-                                })
-                              );
-                            }}
-                          />
-                        </div>
-                      );
-                    })}
+                    {!props.loading &&
+                      props.pillNames.map((name) => {
+                        return (
+                          <div key={`inline-${name}`} className="mb-3">
+                            <Form.Check
+                              inline
+                              label={name}
+                              type="radio"
+                              id={name}
+                              name="pickPill"
+                              onChange={(e) => {
+                                setPillPick(e.target.id);
+                                setRefillQuantities(
+                                  props.pillNames.map((name) => {
+                                    if (name === e.target.id) {
+                                      return getNoneZeroVal();
+                                    }
+                                    return 0;
+                                  })
+                                );
+                              }}
+                            />
+                          </div>
+                        );
+                      })}
                   </Form.Group>
                 </fieldset>{" "}
                 <Form.Group controlId="formQuantity">
@@ -141,7 +131,7 @@ function Refill(props) {
                     Enter 1 pill quantity
                   </Form.Text>
                 </Form.Group>
-                {!submitted && (
+                {
                   <div className="text-center">
                     <Button
                       className=""
@@ -152,12 +142,7 @@ function Refill(props) {
                       Start refill
                     </Button>
                   </div>
-                )}
-                {submitted && (
-                  <div className="text-center">
-                    <h2>Done!</h2>
-                  </div>
-                )}
+                }
               </Form>
             </Col>
           </Row>

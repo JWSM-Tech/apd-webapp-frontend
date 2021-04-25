@@ -2,28 +2,27 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Refill from "./Refill";
 
-const espRoute = "http://apdwifimodule.local/submit_data";
-
-const q = [1, 3, 0, 3, 2, 1, 3, 0];
-const n = ["Hey", "t", "test", "dfsa", "fdsaf", "fa", "dfkja", "dfklsa"];
+const espRoute = "http://apdwifimodule.local/get_pill_status";
 
 function PrefetchStatus() {
-  const [pillQuantities, setPillQuantites] = useState(q);
-  const [pillNames, setPillNames] = useState(n);
-  const [loading, setLoading] = useState(false);
+  const [pillQuantities, setPillQuantites] = useState(null);
+  const [pillNames, setPillNames] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //     if (pillNames == null || pillQuantities == null) {
-  //         setLoading(true);
-  //         axios.get(espRoute).then(res => {
-  //             setPillNames(res.data.pillNames)
-  //             setPillQuantites(res.data.pillQuantities)
-  //             setLoading(false)
-  //         }).catch(() => {
-  //             window.alert("An error occured, try again.")
-  //         })
-  //     }
-  // })
+  useEffect(() => {
+    if (pillNames === null || pillQuantities === null) {
+      setLoading(true);
+      axios.get(espRoute).then((res) => {
+        setPillNames(
+          res.data.pillNames.filter((name) => {
+            return name !== "";
+          })
+        );
+        setPillQuantites(res.data.pillQuantities);
+        setLoading(false);
+      });
+    }
+  });
 
   return (
     <Refill

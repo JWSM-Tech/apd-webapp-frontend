@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import axios from "axios";
 
-const espRoute = "http://apdwifimodule.local/";
+const espRoute = "http://apdwifimodule.local/submit_add_data";
 
 function AddPill() {
   const [pillName, setPillName] = useState("");
