@@ -25,7 +25,7 @@ function App() {
     {
       title: "Create reminder",
       path: "/apd/create-reminder",
-      icon: faHome,
+      icon: faConciergeBell,
       cName: "nav-text",
     },
     {

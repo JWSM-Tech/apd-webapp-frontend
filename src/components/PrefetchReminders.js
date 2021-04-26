@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 import ViewReminders from "./ViewReminders";
 import RemoveReminder from "./RemoveReminder";
 
-// TODO: Route
-const espRoute = "";
+const espRoute = "http://apdwifimodule.local/get_reminders";
 
 function PrefetchReminders(props) {
   const [loading, setLoading] = useState(true);
@@ -15,7 +14,7 @@ function PrefetchReminders(props) {
     if (reminders === null) {
       setLoading(true);
       axios.get(espRoute).then((res) => {
-        setReminders(res.data.reminders);
+        setReminders(res.data);
         setLoading(false);
       });
     }

@@ -23,6 +23,15 @@ function RemoveReminder(props) {
       });
   };
 
+  const parseMinute = (minute) => {
+    console.log(minute);
+    if (minute < 10) {
+      return "0" + minute.toString();
+    }
+
+    return minute.toString();
+  };
+
   return (
     <Container>
       <Row>
@@ -42,10 +51,12 @@ function RemoveReminder(props) {
                     </Form.Label>
                     {!props.loading &&
                       props.reminders.map((reminder) => {
+                        if (reminder.hour === 0 && reminder.minute === 0)
+                          return;
                         return (
                           <div
                             key={`inline-${
-                              reminder.hour + ":" + reminder.minute
+                              reminder.hour + ":" + parseMinute(reminder.minute)
                             }`}
                             className="mb-3"
                           >
@@ -54,14 +65,14 @@ function RemoveReminder(props) {
                               label={
                                 reminder.hour +
                                 ":" +
-                                reminder.minute +
-                                " " +
-                                reminder.pillNames.map((name) => {
-                                  return name + " ";
-                                })
+                                parseMinute(reminder.minute)
                               }
                               type="radio"
-                              id={reminder.hour + ":" + reminder.minute}
+                              id={
+                                reminder.hour +
+                                ":" +
+                                parseMinute(reminder.minute)
+                              }
                               name="pickReminder"
                               onChange={(e) => {
                                 setHour(
